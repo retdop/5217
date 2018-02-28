@@ -1,27 +1,36 @@
 function start () {
   var button = document.getElementsByTagName('button')[0]
   button.parentNode.removeChild(button)
-  work(5)
+  go(52*60, 17*60)
 }
 
-function work (timeLeft) {
+function go (workTime, restTime) {
+  timeLeft = workTime
+  isWorking = true
+  work()
+  document.getElementById('time').innerHTML = Math.floor(timeLeft/60)
+  setInterval(function () {
+    timeLeft--
+    if (timeLeft === 0) {
+      if (isWorking) {
+        rest()
+        timeLeft = restTime
+      } else {
+        work()
+        timeLeft = workTime
+      }
+      isWorking = !isWorking
+    }
+    document.getElementById('time').innerHTML = Math.floor(timeLeft/60) 
+  }, 1000)
+}
+
+function work () {
   document.getElementsByTagName('body')[0].style.backgroundColor = 'blue'
   document.getElementById('step').innerHTML = 'WORK'
-  document.getElementById('time').innerHTML = timeLeft
-  setInterval(function () {
-    timeLeft--
-    document.getElementById('time').innerHTML = timeLeft
-    if (timeLeft === 0) rest(3)
-  }, 1000)
 }
 
-function rest (timeLeft) {
+function rest () {
   document.getElementsByTagName('body')[0].style.backgroundColor = 'red'
   document.getElementById('step').innerHTML = 'REST'
-  document.getElementById('time').innerHTML = timeLeft
-  setInterval(function () {
-    timeLeft--
-    document.getElementById('time').innerHTML = timeLeft
-    if (timeLeft === 0) work(5)
-  }, 1000)
 }
